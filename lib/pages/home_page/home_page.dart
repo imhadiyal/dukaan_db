@@ -1,62 +1,54 @@
-import 'package:dukaan/controller/login_controller.dart';
+import 'package:dukaan/controller/api_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
-import '../../routes.dart';
-
-const users = {
-  'dribbble@gmail.com': '12345',
-  'hunter@gmail.com': 'hunter',
-};
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  Duration get loginTime => const Duration(milliseconds: 2250);
-
-  Future<String?> _authUser(LoginData data) {
-    debugPrint('Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(data.name)) {
-        return 'User not exists';
-      }
-      if (users[data.name] != data.password) {
-        return 'Password does not match';
-      }
-      return null;
-    });
-  }
-
-  Future<String?> _signupUser(SignupData data) {
-    debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    return Future.delayed(loginTime).then((_) {
-      return null;
-    });
-  }
-
-  Future<String> _recoverPassword(String name) {
-    debugPrint('Name: $name');
-    return Future.delayed(loginTime).then((_) {
-      if (!users.containsKey(name)) {
-        return 'User not exists';
-      }
-      return name;
-    });
-  }
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    LoginController mutable = Provider.of<LoginController>(context);
-    return FlutterLogin(
-      title: 'ECORP',
-      // logo: const AssetImage('assets/images/ecorp-lightblue.png'),
-      onLogin: _authUser,
-      onSignup: _signupUser,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushNamed(Routes.routes.splashScreen);
-      },
-      onRecoverPassword: _recoverPassword,
+    Api mutable = Provider.of<Api>(context);
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home Page'),
+      ),
+      body: Center(
+        child: (mutable.allProduct.isEmpty)
+            ? Shimmer.fromColors(
+                baseColor: Colors.grey.shade300,
+                highlightColor: Colors.grey.shade200,
+                child: Column(
+                  children: List.generate(
+                    5,
+                    (index) => const Card(
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: 127,
+                          ),
+                        ],
+                      ),
+                      // child: ,
+                    ),
+                  ),
+                ),
+              )
+            : GridView.builder(
+                itemCount: mutable.allProduct.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    child: Container(
+                      color: Colors.red,
+                    ),
+                  );
+                },
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 3 / 5,
+                ),
+              ),
+      ),
     );
   }
 }

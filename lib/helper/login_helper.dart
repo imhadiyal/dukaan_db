@@ -1,3 +1,5 @@
+import 'package:dukaan/modals/cart_product_modal.dart';
+import 'package:dukaan/modals/product_modals.dart';
 import 'package:logger/logger.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -5,7 +7,7 @@ import '../modals/login_modals.dart';
 
 enum TableName { login, fav, cart }
 
-enum DbColumns { id, email, password }
+enum DbLogin { id, email, password }
 
 enum FavProducts {
   id,
@@ -21,13 +23,30 @@ enum FavProducts {
   thumbnail,
 }
 
+enum CartProducts {
+  id,
+  title,
+  description,
+  category,
+  price,
+  discountPercentage,
+  brand,
+  warrantyInformation,
+  availabilityStatus,
+  returnPolicy,
+  thumbnail,
+}
+
 class LoginHelper {
   LoginHelper._();
+
   static LoginHelper loginHelper = LoginHelper._();
   String dbName = 'my_database.db';
   late Database database;
   late Database table;
+  late Database cart;
   Logger logger = Logger();
+
   Future<void> initdb() async {
     String dbPath = await getDatabasesPath();
     database = await openDatabase(
@@ -35,9 +54,9 @@ class LoginHelper {
       version: 1,
       onCreate: (db, version) async {
         String sql = """CREATE TABLE IF NOT EXISTS ${TableName.login.name} 
-            (${DbColumns.id.name} INTEGER PRIMARY KEY AUTOINCREMENT,
-             ${DbColumns.email.name} TEXT UNIQUE NOT NULL,
-             ${DbColumns.password.name} TEXT NOT NULL);""";
+            (${DbLogin.id.name} INTEGER PRIMARY KEY AUTOINCREMENT,
+             ${DbLogin.email.name} TEXT UNIQUE NOT NULL,
+             ${DbLogin.password.name} TEXT NOT NULL);""";
         await db
             .execute(
               sql,
@@ -68,7 +87,7 @@ class LoginHelper {
         ${FavProducts.availabilityStatus.name} TEXT NOT NULL,
         ${FavProducts.returnPolicy.name} TEXT NOT NULL,
         ${FavProducts.thumbnail.name} TEXT NOT NULL
-        );;""";
+        );""";
         db
             .execute(query)
             .then((value) => logger.i('table created'))
@@ -77,19 +96,61 @@ class LoginHelper {
       onUpgrade: (db, v1, v2) {},
       onDowngrade: (db, v1, v2) {},
     );
+
+    //--------------------------cart table------------------------
+
+    cart = await openDatabase('${TableName.cart.name}/$dbPath', version: 1,
+        onCreate: (db, version) {
+      String query = """CREATE TABLE IF NOT EXISTS ${TableName.cart.name}(
+    ${CartProducts.id.name} INTEGER PRIMARY KEY AUTOINCREMENT,
+    ${CartProducts.title.name} TEXT NOT NULL,
+    ${CartProducts.description.name} TEXT NOT NULL,
+    ${CartProducts.category.name} TEXT NOT NULL,
+    ${CartProducts.price.name} DOUBLE NOT NULL,
+    ${CartProducts.discountPercentage.name} DOUBLE NOT NULL,
+    ${CartProducts.brand.name} TEXT NOT NULL,
+    ${CartProducts.warrantyInformation.name} TEXT NOT NULL,
+    ${CartProducts.availabilityStatus.name} TEXT NOT NULL,
+    ${CartProducts.returnPolicy.name} TEXT NOT NULL,
+    ${CartProducts.thumbnail.name} TEXT NOT NULL
+    );""";
+      db
+          .execute(query)
+          .then((value) => logger.i('cart table created'))
+          .onError((error, stackTrace) => logger.e('ERROR:$error'));
+    });
   }
 
   Future<void> insertData({required LoginModals loginmodals}) async {
-    // String sql =
-    //     "INSERT INTO $tableName(${DbColumns.id.name},${DbColumns.email.name},${DbColumns.password.name}) VALUES(?,?,?);";
-
-    Map<String, dynamic> map = loginmodals.users;
+    Map<String, dynamic> map = loginmodals.toJson();
     await database.insert(TableName.login.name, map);
+  }
+
+  Future<void> favInsertData({required Products productModal}) async {
+    Map<String, dynamic> map = productModal.toJson();
+    await table.insert(TableName.fav.name, map);
+  }
+
+  Future<void> cartInsertData({required CartProductModal cartModal}) async {
+    Map<String, dynamic> map = cartModal.toJson();
+    await cart.insert(TableName.cart.name, map);
   }
 
   Future<List<LoginModals>> getallData() async {
     String sql = 'SELECT * FROM ${TableName.login.name};';
     List<Map<String, dynamic>> data = await database.rawQuery(sql);
-    return data.map((e) => LoginModals.fromMap(data: e)).toList();
+    return data.map((e) => LoginModals.fromJson(e)).toList();
+  }
+
+  Future<List<Products>> getFavData() async {
+    String sql = 'SELECT * FROM ${TableName.fav.name};';
+    List<Map<String, dynamic>> data = await table.rawQuery(sql);
+    return data.map((e) => Products.fromJson(e)).toList();
+  }
+
+  Future<List<CartProductModal>> getCartData() async {
+    String sql = 'SELECT * FROM ${TableName.cart.name};';
+    List<Map<String, dynamic>> data = await cart.rawQuery(sql);
+    return data.map((e) => CartProductModal.fromJson(e)).toList();
   }
 }
