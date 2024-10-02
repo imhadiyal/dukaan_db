@@ -8,9 +8,9 @@ class ProductController extends ChangeNotifier {
   ProductController() {
     initData();
   }
-
   List<Products> favList = [];
   List<CartProductModal> cartList = [];
+  bool islike = false;
 
   Future<void> initData() async {
     favList = await LoginHelper.loginHelper.getFavData();
@@ -28,5 +28,10 @@ class ProductController extends ChangeNotifier {
     await LoginHelper.loginHelper.cartInsertData(
         cartModal: CartProductModal.fromJson(cartModal.toJson()));
     initData();
+  }
+
+  like() {
+    islike = !islike;
+    notifyListeners();
   }
 }

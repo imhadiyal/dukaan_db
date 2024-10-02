@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../helper/login_helper.dart';
 
 class DataController extends ChangeNotifier {
+  bool isAndroid = true;
   SharedPreferences preferences;
 
   DataController({required this.preferences}) {
@@ -16,6 +17,11 @@ class DataController extends ChangeNotifier {
         .onError((error, stakTrace) => Logger().e("error:$error"));
   }
   List<LoginModals> list = [];
+
+  void swich() {
+    isAndroid = !isAndroid;
+    notifyListeners();
+  }
 
   Future<void> initData() async {
     list = await LoginHelper.loginHelper.getallData();

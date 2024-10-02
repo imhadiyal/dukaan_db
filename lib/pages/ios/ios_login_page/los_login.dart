@@ -1,12 +1,14 @@
 import 'package:dukaan/controller/data_controller.dart';
+import 'package:dukaan/extension.dart';
 import 'package:dukaan/modals/login_modals.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../routes.dart';
+import '../../../routes.dart';
 
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class ILoginPage extends StatelessWidget {
+  const ILoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,95 +17,82 @@ class LoginPage extends StatelessWidget {
     double defaultFontSize = 14;
     double defaultIconSize = 17;
 
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Switch(
-              value: Provider.of<DataController>(context).isAndroid,
-              onChanged: (val) {
-                Provider.of<DataController>(context, listen: false).swich();
-              })
-        ],
-        title: const Text('loginPage'),
-      ),
-      body: Container(
+    return CupertinoPageScaffold(
+      resizeToAvoidBottomInset: false,
+      child: Container(
         padding:
             const EdgeInsets.only(left: 20, right: 20, top: 35, bottom: 30),
         width: double.infinity,
         height: double.infinity,
         color: Colors.white70,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            CupertinoSwitch(
+              value: Provider.of<DataController>(context).isAndroid,
+              onChanged: (val) {
+                Provider.of<DataController>(context, listen: false).swich();
+              },
+            ),
             Flexible(
               flex: 5,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 15,
+                  const Text(
+                    'Login into\nyour account',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFFBC1F26),
+                    ),
+                    textAlign: TextAlign.left,
                   ),
-                  TextField(
+                  30.ofHeight,
+                  CupertinoTextField(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    placeholder: 'Enter Email',
+                    placeholderStyle:
+                        const TextStyle(color: CupertinoColors.systemGrey),
+                    decoration: BoxDecoration(
+                      color: CupertinoColors.systemGrey6,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: CupertinoColors.black,
+                    ),
+                    cursorColor: CupertinoColors.black,
+                    clearButtonMode: OverlayVisibilityMode.editing,
                     onChanged: (val) {
                       user.email = val;
                     },
                     showCursor: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(
-                        Icons.email,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: const Color(0xFFF2F3F5),
-                      hintStyle: TextStyle(
-                          color: const Color(0xFF666666),
-                          fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize),
-                      hintText: "Email",
-                    ),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  TextField(
+                  CupertinoTextField(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    placeholder: 'Enter text',
+                    placeholderStyle:
+                        const TextStyle(color: CupertinoColors.systemGrey),
+                    decoration: BoxDecoration(
+                      color: CupertinoColors.systemGrey6,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: CupertinoColors.black,
+                    ),
+                    cursorColor: CupertinoColors.systemRed,
+                    clearButtonMode: OverlayVisibilityMode.editing,
                     onChanged: (val) {
                       user.password = val;
                     },
                     showCursor: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(
-                        Icons.password,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      suffixIcon: Icon(
-                        Icons.remove_red_eye,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: const Color(0xFFF2F3F5),
-                      hintStyle: TextStyle(
-                        color: const Color(0xFF666666),
-                        fontFamily: defaultFontFamily,
-                        fontSize: defaultFontSize,
-                      ),
-                      hintText: "Password",
-                    ),
                   ),
                   const SizedBox(
                     height: 15,
@@ -113,7 +102,7 @@ class LoginPage extends StatelessWidget {
                     child: Text(
                       "Forgot your password?",
                       style: TextStyle(
-                        color: Color(0xFF666666),
+                        color: const Color(0xFF666666),
                         fontFamily: defaultFontFamily,
                         fontSize: defaultFontSize,
                         fontStyle: FontStyle.normal,
@@ -124,12 +113,11 @@ class LoginPage extends StatelessWidget {
                   const SizedBox(
                     height: 15,
                   ),
-                  Container(
+                  SizedBox(
                     height: MediaQuery.of(context).size.height / 16,
                     width: double.infinity,
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Color(0xFFF2F3F7)),
-                    child: ElevatedButton(
+                    child: CupertinoButton(
+                      color: const Color(0xFFBC1F26),
                       onPressed: () {
                         if (Provider.of<DataController>(context, listen: false)
                             .login(modal: user)) {
@@ -137,15 +125,6 @@ class LoginPage extends StatelessWidget {
                         }
                         Navigator.pushNamed(context, Routes.routes.homePage);
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFBC1F26),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          side: const BorderSide(
-                            color: Color(0xFFBC1F26),
-                          ),
-                        ),
-                      ),
                       child: const Text(
                         "Sign In",
                         style: TextStyle(
@@ -180,7 +159,7 @@ class LoginPage extends StatelessWidget {
                         fontStyle: FontStyle.normal,
                       ),
                     ),
-                    InkWell(
+                    GestureDetector(
                       onTap: () => {
                         Navigator.pushNamed(
                             context, Routes.routes.registrationPage)
