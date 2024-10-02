@@ -123,7 +123,7 @@ class ILoginPage extends StatelessWidget {
                             .login(modal: user)) {
                           Navigator.pushNamed(context, Routes.routes.homePage);
                         }
-                        Navigator.pushNamed(context, Routes.routes.homePage);
+                        Navigator.pushNamed(context, Routes.routes.ioshomePage);
                       },
                       child: const Text(
                         "Sign In",

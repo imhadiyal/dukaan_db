@@ -21,9 +21,10 @@ class MyApp extends StatelessWidget {
                 : Routes.routes.registrationPage,
             routes: Routes.routes.routesmap,
           )
-        : const CupertinoApp(
+        : CupertinoApp(
             debugShowCheckedModeBanner: false,
-            home: ILoginPage(),
+            initialRoute: Routes.routes.iosloginPage,
+            routes: Routes.routes.routesmap,
           );
   }
 }
