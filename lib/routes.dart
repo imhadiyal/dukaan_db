@@ -1,8 +1,8 @@
-import 'package:dukaan/pages/home_page/home_page.dart';
+import 'package:dukaan/pages/android/home_page/home_page.dart';
+import 'package:dukaan/pages/android/login_page/login_page.dart';
+import 'package:dukaan/pages/android/ragistration_page/ragitration_page.dart';
 import 'package:dukaan/pages/ios/IosHomePage/ios_home_page.dart';
 import 'package:dukaan/pages/ios/ios_login_page/los_login.dart';
-import 'package:dukaan/pages/login_page/login_page.dart';
-import 'package:dukaan/pages/ragistration_page/ragitration_page.dart';
 import 'package:dukaan/pages/splash_screen/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 

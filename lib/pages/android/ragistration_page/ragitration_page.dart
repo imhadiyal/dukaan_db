@@ -1,12 +1,12 @@
 import 'package:dukaan/controller/data_controller.dart';
+import 'package:dukaan/extension.dart';
 import 'package:dukaan/modals/login_modals.dart';
+import 'package:dukaan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../routes.dart';
-
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+class AppSingUp extends StatelessWidget {
+  const AppSingUp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,16 +16,6 @@ class LoginPage extends StatelessWidget {
     double defaultIconSize = 17;
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Switch(
-              value: Provider.of<DataController>(context).isAndroid,
-              onChanged: (val) {
-                Provider.of<DataController>(context, listen: false).swich();
-              })
-        ],
-        title: const Text('loginPage'),
-      ),
       body: Container(
         padding:
             const EdgeInsets.only(left: 20, right: 20, top: 35, bottom: 30),
@@ -37,11 +27,18 @@ class LoginPage extends StatelessWidget {
             Flexible(
               flex: 5,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 15,
+                  const Text(
+                    'Create\nyour account',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFFBC1F26),
+                    ),
+                    textAlign: TextAlign.left,
                   ),
+                  30.ofHeight,
                   TextField(
                     onChanged: (val) {
                       user.email = val;
@@ -49,7 +46,9 @@ class LoginPage extends StatelessWidget {
                     showCursor: true,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10.0),
+                        ),
                         borderSide: BorderSide(
                           width: 0,
                           style: BorderStyle.none,
@@ -88,38 +87,50 @@ class LoginPage extends StatelessWidget {
                       filled: true,
                       prefixIcon: Icon(
                         Icons.password,
-                        color: const Color(0xFF666666),
+                        color: Color(0xFF666666),
                         size: defaultIconSize,
                       ),
-                      suffixIcon: Icon(
-                        Icons.remove_red_eye,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: const Color(0xFFF2F3F5),
+                      fillColor: Color(0xFFF2F3F5),
                       hintStyle: TextStyle(
-                        color: const Color(0xFF666666),
-                        fontFamily: defaultFontFamily,
-                        fontSize: defaultFontSize,
-                      ),
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
                       hintText: "Password",
                     ),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      "Forgot your password?",
-                      style: TextStyle(
+                  TextField(
+                    onChanged: (val) {
+                      user.password = val;
+                    },
+                    showCursor: true,
+                    decoration: InputDecoration(
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      prefixIcon: Icon(
+                        Icons.password_sharp,
+                        color: const Color(0xFF666666),
+                        size: defaultIconSize,
+                      ),
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
                         color: Color(0xFF666666),
                         fontFamily: defaultFontFamily,
                         fontSize: defaultFontSize,
-                        fontStyle: FontStyle.normal,
                       ),
-                      textAlign: TextAlign.end,
+                      hintText: "Conform Password",
                     ),
+                  ),
+                  const SizedBox(
+                    height: 10,
                   ),
                   const SizedBox(
                     height: 15,
@@ -128,14 +139,13 @@ class LoginPage extends StatelessWidget {
                     height: MediaQuery.of(context).size.height / 16,
                     width: double.infinity,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Color(0xFFF2F3F7)),
+                      shape: BoxShape.circle,
+                      color: Color(0xFFF2F3F7),
+                    ),
                     child: ElevatedButton(
                       onPressed: () {
-                        if (Provider.of<DataController>(context, listen: false)
-                            .login(modal: user)) {
-                          Navigator.pushNamed(context, Routes.routes.homePage);
-                        }
-                        Navigator.pushNamed(context, Routes.routes.homePage);
+                        Provider.of<DataController>(context, listen: false)
+                            .loginInsertData(modal: user);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFBC1F26),
@@ -147,7 +157,7 @@ class LoginPage extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        "Sign In",
+                        "Sign Up",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -170,9 +180,9 @@ class LoginPage extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
+                  children: [
                     Text(
-                      "Don't have an account? ",
+                      "Already have an account? ",
                       style: TextStyle(
                         color: const Color(0xFF666666),
                         fontFamily: defaultFontFamily,
@@ -181,17 +191,18 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () => {
-                        Navigator.pushNamed(
-                            context, Routes.routes.registrationPage)
+                      onTap: () {
+                        Navigator.pushNamed(context, Routes.routes.loginPage);
                       },
-                      child: Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          color: const Color(0xFFAC252B),
-                          fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize,
-                          fontStyle: FontStyle.normal,
+                      child: Container(
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                            color: Color(0xFFAC252B),
+                            fontFamily: defaultFontFamily,
+                            fontSize: defaultFontSize,
+                            fontStyle: FontStyle.normal,
+                          ),
                         ),
                       ),
                     ),

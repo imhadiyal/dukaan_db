@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../../controller/product_controller.dart';
+import '../../../controller/product_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

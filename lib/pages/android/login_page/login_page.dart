@@ -1,12 +1,12 @@
+import 'package:dukaan/controller/data_controller.dart';
+import 'package:dukaan/extension.dart';
 import 'package:dukaan/modals/login_modals.dart';
+import 'package:dukaan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../controller/data_controller.dart';
-import '../../routes.dart';
-
-class AppSingUp extends StatelessWidget {
-  const AppSingUp({super.key});
+class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,16 @@ class AppSingUp extends StatelessWidget {
     double defaultIconSize = 17;
 
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Switch(
+              value: Provider.of<DataController>(context).isAndroid,
+              onChanged: (val) {
+                Provider.of<DataController>(context, listen: false).swich();
+              })
+        ],
+        title: const Text('loginPage'),
+      ),
       body: Container(
         padding:
             const EdgeInsets.only(left: 20, right: 20, top: 35, bottom: 30),
@@ -27,8 +37,18 @@ class AppSingUp extends StatelessWidget {
             Flexible(
               flex: 5,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  const Text(
+                    'Login into\nyour account',
+                    style: TextStyle(
+                      fontSize: 30,
+                      color: Color(0xFFBC1F26),
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  30.ofHeight,
                   const SizedBox(
                     height: 15,
                   ),
@@ -39,9 +59,7 @@ class AppSingUp extends StatelessWidget {
                     showCursor: true,
                     decoration: InputDecoration(
                       border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         borderSide: BorderSide(
                           width: 0,
                           style: BorderStyle.none,
@@ -80,50 +98,38 @@ class AppSingUp extends StatelessWidget {
                       filled: true,
                       prefixIcon: Icon(
                         Icons.password,
-                        color: Color(0xFF666666),
+                        color: const Color(0xFF666666),
                         size: defaultIconSize,
                       ),
-                      fillColor: Color(0xFFF2F3F5),
+                      suffixIcon: Icon(
+                        Icons.remove_red_eye,
+                        color: const Color(0xFF666666),
+                        size: defaultIconSize,
+                      ),
+                      fillColor: const Color(0xFFF2F3F5),
                       hintStyle: TextStyle(
-                          color: Color(0xFF666666),
-                          fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize),
+                        color: const Color(0xFF666666),
+                        fontFamily: defaultFontFamily,
+                        fontSize: defaultFontSize,
+                      ),
                       hintText: "Password",
                     ),
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  TextField(
-                    onChanged: (val) {
-                      user.password = val;
-                    },
-                    showCursor: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(
-                        Icons.password_sharp,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: Color(0xFFF2F3F5),
-                      hintStyle: TextStyle(
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      "Forgot your password?",
+                      style: TextStyle(
                         color: Color(0xFF666666),
                         fontFamily: defaultFontFamily,
                         fontSize: defaultFontSize,
+                        fontStyle: FontStyle.normal,
                       ),
-                      hintText: "Conform Password",
+                      textAlign: TextAlign.end,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10,
                   ),
                   const SizedBox(
                     height: 15,
@@ -132,13 +138,14 @@ class AppSingUp extends StatelessWidget {
                     height: MediaQuery.of(context).size.height / 16,
                     width: double.infinity,
                     decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFF2F3F7),
-                    ),
+                        shape: BoxShape.circle, color: Color(0xFFF2F3F7)),
                     child: ElevatedButton(
                       onPressed: () {
-                        Provider.of<DataController>(context, listen: false)
-                            .loginInsertData(modal: user);
+                        if (Provider.of<DataController>(context, listen: false)
+                            .login(modal: user)) {
+                          Navigator.pushNamed(context, Routes.routes.homePage);
+                        }
+                        Navigator.pushNamed(context, Routes.routes.homePage);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFBC1F26),
@@ -150,7 +157,7 @@ class AppSingUp extends StatelessWidget {
                         ),
                       ),
                       child: const Text(
-                        "Sign Up",
+                        "Sign In",
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -173,9 +180,9 @@ class AppSingUp extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                  children: <Widget>[
                     Text(
-                      "Already have an account? ",
+                      "Don't have an account? ",
                       style: TextStyle(
                         color: const Color(0xFF666666),
                         fontFamily: defaultFontFamily,
@@ -184,18 +191,17 @@ class AppSingUp extends StatelessWidget {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, Routes.routes.loginPage);
+                      onTap: () => {
+                        Navigator.pushNamed(
+                            context, Routes.routes.registrationPage)
                       },
-                      child: Container(
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(
-                            color: Color(0xFFAC252B),
-                            fontFamily: defaultFontFamily,
-                            fontSize: defaultFontSize,
-                            fontStyle: FontStyle.normal,
-                          ),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          color: const Color(0xFFAC252B),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize,
+                          fontStyle: FontStyle.normal,
                         ),
                       ),
                     ),
