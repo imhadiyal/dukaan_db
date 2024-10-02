@@ -30,5 +30,8 @@ Welcome to City Shop, a modern e-commerce application with extensive functionali
 
 ## `Ios `
 
-<img src = "https://github.com/user-attachments/assets/4c6b70ad-45f7-4878-9d7d-7291f8caa5ff" width = "300">
+<img src = "https://github.com/user-attachments/assets/9f38ac9d-9153-4b30-8fe8-5c760cce589c" width = "300">
 <img src = "https://github.com/user-attachments/assets/fcf83fbc-51fa-472b-8c3c-e726018eece0" width = "300">
+
+
+
