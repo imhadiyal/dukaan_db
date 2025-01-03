@@ -15,20 +15,31 @@ class LoginPage extends StatelessWidget {
     double defaultFontSize = 14;
     double defaultIconSize = 17;
 
+    // MediaQuery to get screen dimensions
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    // Adjust font size based on screen width
+    double fontSize = screenWidth > 600 ? 16 : defaultFontSize;
+
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          Switch(
-              value: Provider.of<DataController>(context).isAndroid,
-              onChanged: (val) {
-                Provider.of<DataController>(context, listen: false).swich();
-              })
-        ],
-        title: const Text('loginPage'),
-      ),
+      // appBar: AppBar(
+      //   actions: [
+      //     Switch(
+      //         value: Provider.of<DataController>(context).isAndroid,
+      //         onChanged: (val) {
+      //           Provider.of<DataController>(context, listen: false).swich();
+      //         })
+      //   ],
+      //   title: const Text('loginPage'),
+      // ),
       body: Container(
-        padding:
-            const EdgeInsets.only(left: 20, right: 20, top: 35, bottom: 30),
+        padding: EdgeInsets.only(
+          left: screenWidth * 0.05,
+          right: screenWidth * 0.05,
+          top: 35,
+          bottom: 30,
+        ),
         width: double.infinity,
         height: double.infinity,
         color: Colors.white70,
@@ -40,15 +51,15 @@ class LoginPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Login into\nyour account',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize: screenWidth > 600 ? 30 : 24,
                       color: Color(0xFFBC1F26),
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  30.ofHeight,
+                  SizedBox(height: screenHeight * 0.03), // Dynamic spacing
                   const SizedBox(
                     height: 15,
                   ),
@@ -75,7 +86,7 @@ class LoginPage extends StatelessWidget {
                       hintStyle: TextStyle(
                           color: const Color(0xFF666666),
                           fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize),
+                          fontSize: fontSize),
                       hintText: "Email",
                     ),
                   ),
@@ -110,7 +121,7 @@ class LoginPage extends StatelessWidget {
                       hintStyle: TextStyle(
                         color: const Color(0xFF666666),
                         fontFamily: defaultFontFamily,
-                        fontSize: defaultFontSize,
+                        fontSize: fontSize,
                       ),
                       hintText: "Password",
                     ),
@@ -125,7 +136,7 @@ class LoginPage extends StatelessWidget {
                       style: TextStyle(
                         color: Color(0xFF666666),
                         fontFamily: defaultFontFamily,
-                        fontSize: defaultFontSize,
+                        fontSize: fontSize,
                         fontStyle: FontStyle.normal,
                       ),
                       textAlign: TextAlign.end,
@@ -135,7 +146,7 @@ class LoginPage extends StatelessWidget {
                     height: 15,
                   ),
                   Container(
-                    height: MediaQuery.of(context).size.height / 16,
+                    height: screenHeight / 16,
                     width: double.infinity,
                     decoration: const BoxDecoration(
                         shape: BoxShape.circle, color: Color(0xFFF2F3F7)),
@@ -145,7 +156,6 @@ class LoginPage extends StatelessWidget {
                             .login(modal: user)) {
                           Navigator.pushNamed(context, Routes.routes.homePage);
                         }
-                        Navigator.pushNamed(context, Routes.routes.homePage);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFBC1F26),
@@ -186,7 +196,7 @@ class LoginPage extends StatelessWidget {
                       style: TextStyle(
                         color: const Color(0xFF666666),
                         fontFamily: defaultFontFamily,
-                        fontSize: defaultFontSize,
+                        fontSize: fontSize,
                         fontStyle: FontStyle.normal,
                       ),
                     ),
@@ -200,7 +210,7 @@ class LoginPage extends StatelessWidget {
                         style: TextStyle(
                           color: const Color(0xFFAC252B),
                           fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize,
+                          fontSize: fontSize,
                           fontStyle: FontStyle.normal,
                         ),
                       ),

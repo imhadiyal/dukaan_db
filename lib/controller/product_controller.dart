@@ -30,7 +30,7 @@ class ProductController extends ChangeNotifier {
     initData();
   }
 
-  like() {
+  void like() {
     islike = !islike;
     notifyListeners();
   }

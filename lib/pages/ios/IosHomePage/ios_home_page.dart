@@ -41,7 +41,7 @@ class IosHomePage extends StatelessWidget {
             : GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
-                  childAspectRatio: 3.5 / 5,
+                  childAspectRatio: 3.3 / 5,
                 ),
                 itemCount: mutable.allProduct.length,
                 itemBuilder: (context, index) {

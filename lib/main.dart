@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'app.dart';
 import 'controller/data_controller.dart';
 import 'controller/product_controller.dart';
+import 'controller/razorpay.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ Future<void> main() async {
             create: (_) => DataController(preferences: preferences)),
         ChangeNotifierProvider(create: (_) => ProductController()),
         ChangeNotifierProvider(create: (_) => Api()),
+        ChangeNotifierProvider(create: (_) => RazorpayController()),
       ],
       child: MyApp(isLogin: isLogin),
     ),

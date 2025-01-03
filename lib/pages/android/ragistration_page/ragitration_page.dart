@@ -1,12 +1,11 @@
 import 'package:dukaan/controller/data_controller.dart';
-import 'package:dukaan/extension.dart';
 import 'package:dukaan/modals/login_modals.dart';
 import 'package:dukaan/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AppSingUp extends StatelessWidget {
-  const AppSingUp({super.key});
+class AppSignUp extends StatelessWidget {
+  const AppSignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,12 +14,16 @@ class AppSingUp extends StatelessWidget {
     double defaultFontSize = 14;
     double defaultIconSize = 17;
 
+    // Get screen size to scale widgets accordingly
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         padding:
-            const EdgeInsets.only(left: 20, right: 20, top: 35, bottom: 30),
+            EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight * 0.05),
         width: double.infinity,
-        height: double.infinity,
+        height: screenHeight,
         color: Colors.white70,
         child: Column(
           children: [
@@ -30,115 +33,41 @@ class AppSingUp extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
+                  Text(
                     'Create\nyour account',
                     style: TextStyle(
-                      fontSize: 30,
+                      fontSize:
+                          screenWidth * 0.08, // Dynamically adjust font size
                       color: Color(0xFFBC1F26),
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  30.ofHeight,
-                  TextField(
-                    onChanged: (val) {
-                      user.email = val;
-                    },
-                    showCursor: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(10.0),
-                        ),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(
-                        Icons.email,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: const Color(0xFFF2F3F5),
-                      hintStyle: TextStyle(
-                          color: const Color(0xFF666666),
-                          fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize),
-                      hintText: "Email",
-                    ),
+                  SizedBox(height: screenHeight * 0.03),
+                  _buildTextField(
+                    context: context,
+                    hintText: "Email",
+                    icon: Icons.email,
+                    onChanged: (val) => user.email = val,
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(height: screenHeight * 0.02),
+                  _buildTextField(
+                    context: context,
+                    hintText: "Password",
+                    icon: Icons.password,
+                    onChanged: (val) => user.password = val,
                   ),
-                  TextField(
-                    onChanged: (val) {
-                      user.password = val;
-                    },
-                    showCursor: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(
-                        Icons.password,
-                        color: Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: Color(0xFFF2F3F5),
-                      hintStyle: TextStyle(
-                          color: Color(0xFF666666),
-                          fontFamily: defaultFontFamily,
-                          fontSize: defaultFontSize),
-                      hintText: "Password",
-                    ),
+                  SizedBox(height: screenHeight * 0.02),
+                  _buildTextField(
+                    context: context,
+                    hintText: "Confirm Password",
+                    icon: Icons.password_sharp,
+                    onChanged: (val) => user.password = val,
                   ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  TextField(
-                    onChanged: (val) {
-                      user.password = val;
-                    },
-                    showCursor: true,
-                    decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        borderSide: BorderSide(
-                          width: 0,
-                          style: BorderStyle.none,
-                        ),
-                      ),
-                      filled: true,
-                      prefixIcon: Icon(
-                        Icons.password_sharp,
-                        color: const Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      fillColor: Color(0xFFF2F3F5),
-                      hintStyle: TextStyle(
-                        color: Color(0xFF666666),
-                        fontFamily: defaultFontFamily,
-                        fontSize: defaultFontSize,
-                      ),
-                      hintText: "Conform Password",
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
+                  SizedBox(height: screenHeight * 0.03),
                   Container(
-                    height: MediaQuery.of(context).size.height / 16,
+                    height: screenHeight / 16,
                     width: double.infinity,
-                    decoration: const BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Color(0xFFF2F3F7),
                     ),
@@ -148,28 +77,25 @@ class AppSingUp extends StatelessWidget {
                             .loginInsertData(modal: user);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFBC1F26),
+                        backgroundColor: Color(0xFFBC1F26),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.0),
-                          side: const BorderSide(
-                            color: Color(0xFFBC1F26),
-                          ),
+                          side: BorderSide(color: Color(0xFFBC1F26)),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Sign Up",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: screenWidth *
+                              0.05, // Dynamically adjust font size
                           fontFamily: 'Poppins-Medium.ttf',
                         ),
                         textAlign: TextAlign.center,
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  SizedBox(height: screenHeight * 0.02),
                 ],
               ),
             ),
@@ -178,40 +104,65 @@ class AppSingUp extends StatelessWidget {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       "Already have an account? ",
                       style: TextStyle(
-                        color: const Color(0xFF666666),
+                        color: Color(0xFF666666),
                         fontFamily: defaultFontFamily,
                         fontSize: defaultFontSize,
-                        fontStyle: FontStyle.normal,
                       ),
                     ),
                     InkWell(
                       onTap: () {
                         Navigator.pushNamed(context, Routes.routes.loginPage);
                       },
-                      child: Container(
-                        child: Text(
-                          "Sign In",
-                          style: TextStyle(
-                            color: Color(0xFFAC252B),
-                            fontFamily: defaultFontFamily,
-                            fontSize: defaultFontSize,
-                            fontStyle: FontStyle.normal,
-                          ),
+                      child: Text(
+                        "Sign In",
+                        style: TextStyle(
+                          color: Color(0xFFAC252B),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
+      ),
+    );
+  }
+
+  // Helper function to build text fields
+  Widget _buildTextField({
+    required BuildContext context,
+    required String hintText,
+    required IconData icon,
+    required Function(String) onChanged,
+  }) {
+    double defaultFontSize = 14;
+    double defaultIconSize = 17;
+
+    return TextField(
+      onChanged: onChanged,
+      showCursor: true,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+          borderSide: BorderSide(width: 0, style: BorderStyle.none),
+        ),
+        filled: true,
+        prefixIcon: Icon(icon, color: Color(0xFF666666), size: defaultIconSize),
+        fillColor: Color(0xFFF2F3F5),
+        hintStyle: TextStyle(
+          color: Color(0xFF666666),
+          fontSize: defaultFontSize,
+        ),
+        hintText: hintText,
       ),
     );
   }
