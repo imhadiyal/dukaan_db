@@ -19,6 +19,7 @@ class AppSignUp extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding:
             EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight * 0.05),

@@ -23,6 +23,7 @@ class LoginPage extends StatelessWidget {
     double fontSize = screenWidth > 600 ? 16 : defaultFontSize;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       // appBar: AppBar(
       //   actions: [
       //     Switch(
@@ -156,6 +157,7 @@ class LoginPage extends StatelessWidget {
                             .login(modal: user)) {
                           Navigator.pushNamed(context, Routes.routes.homePage);
                         }
+                        Navigator.pushNamed(context, Routes.routes.homePage);
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFBC1F26),
